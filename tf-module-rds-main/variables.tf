@@ -1,0 +1,13 @@
+variable "component" {}
+variable "env" {}
+variable "engine" {}
+variable "engine_Version" {}
+variable "db_name" {}
+variable "subnet_ids" {}
+variable "tags" {}
+variable "instance_count" {}
+variable "instance_class" {}
+variable "kms_key_arn" {}
+variable "vpc_id" {}
+variable "sg_subnet_cidr" {}
+variable "skip_final_snapshot" {}
