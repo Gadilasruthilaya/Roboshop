@@ -1,0 +1,15 @@
+- name: create Jenkins jobs
+  hosts: localhost
+  connection: local
+  vars:
+    sp_jobs:
+      - roboshop-terraform
+    mp_jobs:
+      - cart
+      - catalogue
+      - user
+      - payment
+      - shipping
+      - frontend
+  roles:
+    - jenkins-jobs
