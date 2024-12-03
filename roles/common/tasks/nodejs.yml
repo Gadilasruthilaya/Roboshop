@@ -1,0 +1,41 @@
+- name: configuring Nodejs repos
+  ansible.builtin.shell: curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+
+- name: Install Nodejs
+  ansible.builtin.yum:
+    name: nodejs
+    state: installed
+
+
+- name: App pre requisites
+  ansible.builtin.import_tasks:
+      file: app_presetup.yml
+
+- name: Install Nodejs dependencies
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
+
+- name: Install mongodb_schema_setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: mongo_schema_setup
+    when: load_schema
+
+- name: Systemd setup
+  ansible.builtin.import_tasks:
+    file: systemd_setup.yml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
