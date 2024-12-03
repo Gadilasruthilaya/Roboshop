@@ -1,0 +1,33 @@
+- name: Install my sql client
+  ansible.builtin.yum:
+    name: mysql
+    state: installed
+
+- name: load schema
+  ansible.builtin.shell: mysql -h mysql-dev.devopspractice.store -uroot -pRoboshop@1 </app/schema/{{ component }}.sql
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#echo -e "${color} Install my sql${no_color}"
+#yum install mysql -y &>>${file_path}
+#
+#start_check $?
+#echo -e "${color} load schema ${no_color}"
+#mysql -h mysql-dev.devopspractice.store -uroot -pRoboShop@1 < $app_pathcd /schema/${component}.sql &>>${file_path}
+#start_check $?
