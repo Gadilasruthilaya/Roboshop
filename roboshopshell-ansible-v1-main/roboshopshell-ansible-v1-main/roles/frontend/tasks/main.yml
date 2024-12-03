@@ -1,0 +1,49 @@
+  - name: Installing nginx
+    ansible.builtin.yum:
+        name: nginx
+        state: installed
+    
+  - name: remove directory
+    ansible.builtin.file:
+      path: /usr/share/nginx/html
+      state: absent
+
+  - name: Create a directory 
+    ansible.builtin.file:
+      path: /usr/share/nginx/html
+      state: directory
+
+  - name: Downloading frontend file
+    ansible.builtin.unarchive:
+      src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+      dest: /usr/share/nginx/html
+      remote_src: yes
+
+  - name: Configure nginx config file
+    ansible.builtin.template:
+      src: nginx.conf
+      dest: /etc/nginx/nginx.conf
+
+
+  - name: Configure config file
+    ansible.builtin.template:
+      src: roboshop.conf
+      dest: /etc/nginx/default.d/roboshop.conf
+
+  - name: Enabling  the nginx server
+    ansible.builtin.systemd:
+      name: nginx
+      state: restarted
+      enabled: yes
+
+  - name: install filebeat
+    ansible.builtin.import_role:
+      name: elk
+      tasks_from: filebeat.yml
+
+  - name: install node-exporter
+    ansible.builtin.import_role:
+      name: prometheus
+      tasks_from: node-exporter
+
+

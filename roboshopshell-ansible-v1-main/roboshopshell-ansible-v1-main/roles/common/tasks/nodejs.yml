@@ -1,0 +1,69 @@
+- name: configuring nodejs
+  ansible.builtin.shell: curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+
+- name: Installing nodejs
+  ansible.builtin.yum:
+    name: nodejs
+    state: installed
+    disable_gpg_check: true
+
+- name: Include app_presetup
+  ansible.builtin.import_tasks:
+    file: app_presetup.yml
+
+- name: Install nodejs dependencies
+  ansible.builtin.shell: npm install
+  args:
+    chdir: /app
+
+- name: download documentdb pem file from a path
+  ansible.builtin.get_url:
+    url: https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem
+    dest: /app/rds-combined-ca-bundle.pem
+
+- name: print hello world
+  ansible.builtin.debug:
+    msg: -"{{ load_schema }}"
+  when: load_schema
+
+- name: Include mongo_schema_setup.yml
+  ansible.builtin.import_tasks:
+    file: mongo_schema_setup.yml
+  when: load_schema
+
+
+
+- name: Include systemd_setup
+  ansible.builtin.import_tasks:
+    file: systemd_setup.yml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# nodejs(){
+
+#   echo -e " ${color} configuring nodejs ${no_color}"
+#   curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${file_path}
+
+#   echo -e " ${color} Installing nodejs ${no_color}"
+#   yum install nodejs -y &>>${file_path}
+
+#   app_presetup
+
+#   echo -e " ${color} Install nodejs dependencies ${no_color}"
+#   npm install &>>${file_path}
+
+#   systemd_setup
+
+# }
